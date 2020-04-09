@@ -1,0 +1,16 @@
+{
+  "generalConfiguration": {
+    "sortOnBeforeSave": true
+  },
+  "importStringConfiguration": {
+    "tabSize": 2,
+    "maximumNumberOfImportExpressionsPerLine": {
+      "count": 120,
+      "type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne"
+    }
+  },
+  "sortConfiguration": {
+    "removeUnusedImports": true,
+    "removeUnusedDefaultImports": true
+  }
+}
