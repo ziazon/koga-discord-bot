@@ -4,6 +4,7 @@ import { EntityManager } from 'typeorm';
 
 import { Config } from '../config';
 import { BotUsage } from './bot-usage';
+import { ServerStatus } from './servers-status';
 import { Command } from './types';
 
 export function handleMessage(
@@ -16,7 +17,7 @@ export function handleMessage(
   const channel = message.channel as TextChannel;
   const commandString = message.cleanContent.slice(client.user.username.length + 1).trim();
 
-  const commands: Command[] = [];
+  const commands: Command[] = [new ServerStatus(config, channel, message, logger)];
 
   const command = commands.find((command) => commandString.match(command.regex));
 
