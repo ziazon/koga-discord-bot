@@ -5,6 +5,7 @@ import { EntityManager } from 'typeorm';
 import { Config } from '../config';
 import { BotUsage } from './bot-usage';
 import { ClearChannel } from './channel-clear';
+import { EventReport } from './event-report';
 import { ServerStatus } from './servers-status';
 import { Command } from './types';
 
@@ -20,7 +21,8 @@ export function handleMessage(
 
   const commands: Command[] = [
     new ClearChannel(manager, channel, message, logger),
-    new ServerStatus(config, channel, message, logger)
+    new ServerStatus(config, channel, message, logger),
+    new EventReport(config, channel, message, logger)
   ];
 
   const command = commands.find((command) => commandString.match(command.regex));
