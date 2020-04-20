@@ -7,6 +7,7 @@ import { BotUsage } from './bot-usage';
 import { ClearChannel } from './channel-clear';
 import { EventReport } from './event-report';
 import { KillboardDetails } from './killboard-details';
+import { KillboardMonitor } from './killboard-monitor';
 import { ServerStatus } from './servers-status';
 import { Command } from './types';
 
@@ -24,7 +25,8 @@ export function handleMessage(
     new ClearChannel(manager, channel, message, logger),
     new ServerStatus(config, channel, message, logger),
     new EventReport(config, channel, message, logger),
-    new KillboardDetails(config, channel, message, logger)
+    new KillboardDetails(config, channel, message, logger),
+    new KillboardMonitor(config, manager, channel, message, logger)
   ];
 
   const command = commands.find((command) => commandString.match(command.regex));
