@@ -3,6 +3,7 @@ import { Client } from 'discord.js';
 import { EntityManager } from 'typeorm';
 
 import { Config } from '../config';
+import { LatestKillEvents } from './latest-kill-events';
 
 export async function handleBackgroundProcesses(
   client: Client,
@@ -10,9 +11,13 @@ export async function handleBackgroundProcesses(
   config: Config,
   logger: Benchlogga
 ) {
-  // TODO: do stuff with this.
-  client;
-  manager;
-  config;
-  logger;
+  (async function monitorForEvents() {
+    const proccess = new LatestKillEvents(client, manager, config, logger);
+    try {
+      await proccess.execute();
+      setTimeout(monitorForEvents, 30 * 1000);
+    } catch (error) {
+      logger.error(error);
+    }
+  })();
 }
