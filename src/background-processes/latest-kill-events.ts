@@ -3,13 +3,15 @@ import { Client, MessageOptions, TextChannel } from 'discord.js';
 import * as Jimp from 'jimp';
 import { EntityManager } from 'typeorm';
 
+import { Font } from '@jimp/plugin-print';
+
 import { AlbionClient, Event } from '../clients/albion-api';
 import { KillDetails } from '../commands/utils/compile-kill-message';
 import { Config } from '../config';
+import { LastEvent } from '../db/entity/last-event';
 import { Monitor } from '../db/entity/monitor';
 
 import moment = require('moment');
-
 export class LatestKillEvents {
   private albionClient: AlbionClient;
   constructor(
@@ -23,67 +25,70 @@ export class LatestKillEvents {
 
   async execute() {
     const monitors = await this.manager.find(Monitor);
+    const lastEvent = await this.manager.findOne(LastEvent);
     const textFont = await Jimp.loadFont(this.config.get('FONT_PATH') || Jimp.FONT_SANS_32_BLACK);
     const countFont = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
 
+    const rawEvents = await this.getAllEvents(+lastEvent.lastEventId);
+    const latestEventId = rawEvents[0]?.EventId;
+    const events = rawEvents.reverse();
+
+    this.logger.log(`fetched ${events.length} events for processing.`);
+
+    for (let ei = 0; ei < events.length; ei++) {
+      const event = events[ei];
+      const monitorsForEvent = this.getMonitorsForEvent(monitors, event);
+      await this.sendEventForMonitors(monitorsForEvent, event, textFont, countFont);
+    }
+
+    if (latestEventId) {
+      lastEvent.lastEventId = `${latestEventId}`;
+      lastEvent.lastMessageAt = moment();
+      this.manager.save(lastEvent);
+    }
+  }
+
+  private async sendEventForMonitors(monitors: Monitor[], event: Event, textFont: Font, countFont: Font) {
     let messages: MessageOptions[] = [];
 
-    for (let mi = 0; mi < monitors.length; mi++) {
-      const monitor = monitors[mi];
+    for (let i = 0; i < monitors.length; i++) {
+      const monitor = monitors[i];
       const channel = (await this.discordClient.channels.fetch(monitor.channelId)) as TextChannel;
-      const rawEvents = await this.getAllEvents(+monitor.lastEventId);
-      const latestEventId = rawEvents[0]?.EventId;
-      const events = rawEvents.reverse();
-
-      this.logger.log(`fetched ${events.length} events for processing.`);
-
-      for (let ei = 0; ei < events.length; ei++) {
-        const event = events[ei];
-        if (this.shouldProcessEvent(monitor, event)) {
-          const victory = monitor.monitorId === event.Killer.GuildId;
-          const killDetails = new KillDetails(
-            this.config,
-            this.albionClient,
-            this.logger,
-            victory,
-            event,
-            textFont,
-            countFont
-          );
-          try {
-            const killMessages = await killDetails.getMessages();
-            messages = messages.concat(killMessages);
-          } catch (error) {
-            this.logger.error(error);
-          }
-        }
-      }
-      // TODO: refactor this to move it outside of this for loop.
+      const victory = monitor.monitorId === event.Killer.GuildId;
+      const killDetails = new KillDetails(
+        this.config,
+        this.albionClient,
+        this.logger,
+        victory,
+        event,
+        textFont,
+        countFont
+      );
       try {
-        await this.manager.findOneOrFail(Monitor, monitor.id);
-        for (let index = 0; index < messages.length; index++) {
-          const message = messages[index];
-          await channel.send(message);
-        }
-        if (rawEvents.length) {
-          monitor.lastEventId = `${latestEventId}`;
-          monitor.lastMessageAt = moment();
-          this.manager.save(monitor);
-        }
+        const killMessages = await killDetails.getMessages();
+        messages = messages.concat(killMessages);
       } catch (error) {
         this.logger.error(error);
+      }
+
+      for (let index = 0; index < messages.length; index++) {
+        const message = messages[index];
+        await channel.send(message);
       }
     }
   }
 
-  private shouldProcessEvent(monitor: Monitor, event: Event) {
-    if (monitor.monitorType === 'guild') {
-      return event.Killer.GuildId === monitor.monitorId || event.Victim.GuildId === monitor.monitorId;
-    } else if (monitor.monitorType === 'player') {
-      return event.Killer.Id === monitor.monitorId || event.Victim.Id === monitor.monitorId;
-    } else {
-      return false;
-    }
+  private getMonitorsForEvent(monitors: Monitor[], event: Event) {
+    return monitors.filter((monitor) => {
+      const isGuildEvent =
+        monitor.monitorType === 'guild' &&
+        (event.Killer.GuildId === monitor.monitorId || event.Victim.GuildId === monitor.monitorId);
+      const isPlayerEvent =
+        monitor.monitorType === 'player' &&
+        (event.Killer.Id === monitor.monitorId || event.Victim.Id === monitor.monitorId);
+
+      if (isGuildEvent || isPlayerEvent) return true;
+    });
   }
 
   private async getAllEvents(lastEventId: number, offset: number = 0, limit: number = 51) {

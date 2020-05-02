@@ -2,10 +2,11 @@ import { ConnectionOptions } from 'typeorm';
 
 import { Config } from '../config';
 import { Admin } from './entity/admin';
+import { LastEvent } from './entity/last-event';
 import { Monitor } from './entity/monitor';
 import { DBNamingStrategy } from './naming-strategy';
 
-export const entities: Function[] = [Admin, Monitor];
+export const entities: Function[] = [Admin, Monitor, LastEvent];
 
 export class DBConfigService {
   constructor(private readonly serviceConfig: Config) {}

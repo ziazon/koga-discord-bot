@@ -4,31 +4,13 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeor
 
 import { DateTransformer } from '../date-transformer';
 
-export enum MonitorType {
-  PLAYER = 'player',
-  GUILD = 'guild',
-  ALLIANCE = 'alliance'
-}
-
 @Entity()
-export class Monitor {
+export class LastEvent {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('bigint')
-  serverId: string;
-
-  @Column('bigint')
-  channelId: string;
-
-  @Column({
-    type: 'enum',
-    enum: MonitorType
-  })
-  monitorType: MonitorType;
-
-  @Column('varchar')
-  monitorId: string;
+  @Column('varchar', { nullable: true })
+  lastEventId: string;
 
   @Transform((created) => created?.format() || null)
   @CreateDateColumn({ transformer: new DateTransformer() })
