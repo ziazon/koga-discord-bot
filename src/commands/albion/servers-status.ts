@@ -1,14 +1,14 @@
 import { Benchlogga } from 'benchlogga';
 import { EmbedFieldData, Message, MessageEmbed, TextChannel } from 'discord.js';
 
-import { AlbionClient } from '../clients/albion-api';
-import { Config } from '../config';
-import { Command } from './types';
+import { AlbionClient } from '../../clients/albion-api';
+import { Config } from '../../config';
+import { Command } from '../types';
 
-export class ServerStatus implements Command {
-  public regex = new RegExp(/^servers status$/);
-  public signature = 'servers status';
-  public description = 'Get the Albion servers status.';
+export class AlbionServerStatus implements Command {
+  public regex = new RegExp(/^albion servers status$/);
+  public signature = 'albion servers status';
+  public description = 'Get the Albion Online servers status.';
 
   constructor(
     private config: Config,

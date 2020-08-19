@@ -6,7 +6,7 @@ import { EntityManager } from 'typeorm';
 import { Font } from '@jimp/plugin-print';
 
 import { AlbionClient, Event } from '../clients/albion-api';
-import { KillDetails } from '../commands/utils/compile-kill-message';
+import { KillDetails } from '../commands/albion/utils/compile-kill-message';
 import { Config } from '../config';
 import { LastEvent } from '../db/entity/last-event';
 import { Monitor } from '../db/entity/monitor';

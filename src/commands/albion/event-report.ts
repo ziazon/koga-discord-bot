@@ -2,15 +2,15 @@ import { Benchlogga } from 'benchlogga';
 import { Message, TextChannel } from 'discord.js';
 import * as Jimp from 'jimp';
 
-import { AlbionClient } from '../clients/albion-api';
-import { Config } from '../config';
-import { Command } from './types';
+import { AlbionClient } from '../../clients/albion-api';
+import { Command } from '../../commands/types';
+import { Config } from '../../config';
 import { KillDetails } from './utils/compile-kill-message';
 
-export class EventReport implements Command {
-  public regex = new RegExp(/^event report (win|loss) (.+)$/);
-  public signature = 'event report [win|loss] [eventId]';
-  public description = 'Get details for a specific event by the id';
+export class AlbionEventReport implements Command {
+  public regex = new RegExp(/^albion event report (win|loss) (.+)$/);
+  public signature = 'albion event report [win|loss] [eventId]';
+  public description = 'Get details for a specific Albion Online event by the id';
 
   constructor(
     private config: Config,

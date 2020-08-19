@@ -2,17 +2,17 @@ import { Benchlogga } from 'benchlogga';
 import { Message, TextChannel } from 'discord.js';
 import { EntityManager } from 'typeorm';
 
-import { AlbionClient } from '../clients/albion-api';
-import { Config } from '../config';
-import { Monitor, MonitorType } from '../db/entity/monitor';
-import { Command } from './types';
-import { adminCheck } from './utils/admin-check';
+import { AlbionClient } from '../../clients/albion-api';
+import { Command } from '../../commands/types';
+import { adminCheck } from '../../commands/utils/admin-check';
+import { Config } from '../../config';
+import { Monitor, MonitorType } from '../../db/entity/monitor';
 
-export class KillboardMonitor implements Command {
+export class AlbionKillboardMonitor implements Command {
   private client: AlbionClient;
-  public regex = new RegExp(/^killboard monitor (start|stop) (player|guild) (.+)$/);
-  public signature = 'killboard monitor [start,stop] [player,guild] [targetName]';
-  public description = 'Admin Only. Subscribe to player, or guild kills and deaths in this channel.';
+  public regex = new RegExp(/^albion killboard monitor (start|stop) (player|guild) (.+)$/);
+  public signature = 'albion killboard monitor [start,stop] [player,guild] [targetName]';
+  public description = 'Admin Only. Subscribe to Albion Online player, or guild kills and deaths in this channel.';
 
   constructor(
     private config: Config,

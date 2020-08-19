@@ -2,15 +2,15 @@ import { Benchlogga } from 'benchlogga';
 import { Message, TextChannel } from 'discord.js';
 import * as Jimp from 'jimp';
 
-import { AlbionClient } from '../clients/albion-api';
-import { Config } from '../config';
-import { Command } from './types';
+import { AlbionClient } from '../../clients/albion-api';
+import { Command } from '../../commands/types';
+import { Config } from '../../config';
 import { KillDetails } from './utils/compile-kill-message';
 
-export class KillboardDetails implements Command {
-  public regex = new RegExp(/^killboard details (.+)$/);
-  public signature = 'killboard details [player]';
-  public description = 'Get last death details for a player.';
+export class AlbionKillboardDetails implements Command {
+  public regex = new RegExp(/^albion killboard details (.+)$/);
+  public signature = 'albion killboard details [player]';
+  public description = 'Get last death details for a player in Albion Online.';
 
   constructor(
     private config: Config,

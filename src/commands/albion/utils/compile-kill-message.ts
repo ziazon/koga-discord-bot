@@ -4,8 +4,8 @@ import * as Jimp from 'jimp';
 
 import { Font } from '@jimp/plugin-print';
 
-import { AlbionClient, Equipment, Event, Player } from '../../clients/albion-api';
-import { Config } from '../../config';
+import { AlbionClient, Equipment, Event, Player } from '../../../clients/albion-api';
+import { Config } from '../../../config';
 
 import moment = require('moment');
 
