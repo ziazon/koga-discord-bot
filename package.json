@@ -22,7 +22,7 @@
     "discord.js": "^12.2.0",
     "erlpack": "github:discordapp/erlpack",
     "jimp": "^0.10.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "pg": "^8.0.3",
     "reflect-metadata": "^0.1.13",
