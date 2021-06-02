@@ -16,7 +16,7 @@ export class Admin {
   @Column('bigint')
   serverId: string;
 
-  @Transform((created) => created?.format() || null)
+  @Transform(({ value }) => value?.format() || null)
   @CreateDateColumn({ transformer: new DateTransformer() })
   createdAt: Moment;
 }

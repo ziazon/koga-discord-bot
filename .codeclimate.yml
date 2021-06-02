@@ -1,0 +1,13 @@
+version: '2'
+checks:
+  similar-code:
+    enabled: false
+exclude_patterns:
+  - 'dist/'
+  - '**/node_modules/'
+  - '**/spec/'
+  - '**/test/'
+  - '**/tests/'
+  - '**/vendor/'
+  - '**/*.d.ts'
+  - '**/migrations/'

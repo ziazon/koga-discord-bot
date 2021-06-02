@@ -44,7 +44,7 @@ export class Config {
         .items(validator.string().uri())
         .default(['http://live.albiononline.com/status.txt', 'http://staging.albiononline.com/status.txt']),
       DISCORD_TOKEN: validator.string(),
-      DISCORD_PLAYING_GAME: validator.string().default('Albion Online'),
+      DISCORD_PLAYING_GAME: validator.string().default('with the Koga Clan'),
       FONT_PATH: validator.string().default(''),
       NODE_ENV: Joi.string().default('local'),
       PWD: validator.string(),
