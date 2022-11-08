@@ -22,8 +22,8 @@ export async function channelClear(
   try {
     await channel.bulkDelete(messages);
   } catch (error) {
-    logger.error(error.message);
-    message.reply(`Sorry! ${error.message}.`);
+    // logger.error(error.message);
+    // message.reply(`Sorry! ${error.message}.`);
   }
 }
 
@@ -61,8 +61,8 @@ export class ClearChannel implements Command {
         this.logger.log(`Cleared messages: ${messages.size}`);
         await this.clearAllMessages();
       } catch (error) {
-        this.logger.error(error.message);
-        this.message.reply(`Sorry! ${error.message}.`);
+        // this.logger.error(error.message);
+        // this.message.reply(`Sorry! ${error.message}.`);
       }
     }
   }

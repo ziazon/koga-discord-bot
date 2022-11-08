@@ -2,13 +2,8 @@ import { Transform } from 'class-transformer';
 import { Moment } from 'moment';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { AlbionMonitorType } from '../../types';
 import { DateTransformer } from '../date-transformer';
-
-export enum MonitorType {
-  PLAYER = 'player',
-  GUILD = 'guild',
-  ALLIANCE = 'alliance'
-}
 
 @Entity()
 export class Monitor {
@@ -16,16 +11,16 @@ export class Monitor {
   id: number;
 
   @Column('bigint')
-  serverId: string;
+  serverId: number;
 
   @Column('bigint')
-  channelId: string;
+  channelId: number;
 
   @Column({
     type: 'enum',
-    enum: MonitorType
+    enum: AlbionMonitorType
   })
-  monitorType: MonitorType;
+  monitorType: AlbionMonitorType;
 
   @Column('varchar')
   monitorId: string;

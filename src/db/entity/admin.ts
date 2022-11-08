@@ -11,10 +11,10 @@ export class Admin {
   id: number;
 
   @Column('bigint')
-  userId: string;
+  serverId: string;
 
   @Column('bigint')
-  serverId: string;
+  userId: string;
 
   @Transform(({ value }) => value?.format() || null)
   @CreateDateColumn({ transformer: new DateTransformer() })

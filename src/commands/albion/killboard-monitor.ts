@@ -6,7 +6,8 @@ import { AlbionClient } from '../../clients/albion-api';
 import { Command } from '../../commands/types';
 import { adminCheck } from '../../commands/utils/admin-check';
 import { Config } from '../../config';
-import { Monitor, MonitorType } from '../../db/entity/monitor';
+import { Monitor } from '../../db/entity/monitor';
+import { AlbionMonitorType } from '../../types';
 
 export class AlbionKillboardMonitor implements Command {
   private client: AlbionClient;
@@ -57,9 +58,9 @@ export class AlbionKillboardMonitor implements Command {
       }
 
       const monitor = this.manager.create(Monitor);
-      monitor.serverId = this.channel.guild.id;
-      monitor.channelId = this.channel.id;
-      monitor.monitorType = monitorType as MonitorType;
+      monitor.serverId = parseInt(this.channel.guild.id);
+      monitor.channelId = parseInt(this.channel.id);
+      monitor.monitorType = monitorType as AlbionMonitorType;
       monitor.monitorId = monitorId;
       await this.manager.save(monitor);
       await this.channel.send(

@@ -47,10 +47,10 @@ export class AlbionKillboardDetails implements Command {
 
     const messages = await killDetails.getMessages();
 
-    for (let index = 0; index < messages.length; index++) {
-      const message = messages[index];
-      await this.channel.send(message);
-    }
+    // for (let index = 0; index < messages.length; index++) {
+    //   const message = messages[index];
+    //   await this.channel.send(message);
+    // }
     this.logger.log('killboard detail command done executing');
   }
 }

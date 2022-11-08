@@ -1,12 +1,13 @@
-import { ConnectionOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 
 import { Config } from '../config';
 import { Admin } from './entity/admin';
 import { LastEvent } from './entity/last-event';
 import { Monitor } from './entity/monitor';
+import { NewWorldCircadianRhythm } from './entity/new-world-circadian-rhythm';
 import { DBNamingStrategy } from './naming-strategy';
 
-export const entities: Function[] = [Admin, Monitor, LastEvent];
+export const entities: Function[] = [Admin, Monitor, LastEvent, NewWorldCircadianRhythm];
 
 export class DBConfigService {
   constructor(private readonly serviceConfig: Config) {}
@@ -27,9 +28,8 @@ export class DBConfigService {
       migrations: [`${__dirname}/migrations/*{.js,.ts}`],
       cli: {
         entitiesDir: 'src/db/entities',
-        migrationsDir: 'src/db/migrations',
         subscribersDir: 'src/db/subscribers'
       }
-    } as ConnectionOptions;
+    } as DataSourceOptions;
   }
 }

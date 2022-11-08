@@ -1,5 +1,5 @@
 import { Benchlogga } from 'benchlogga';
-import { MessageAttachment, MessageOptions } from 'discord.js';
+// import { MessageAttachment, MessageOptions } from 'discord.js';
 import * as Jimp from 'jimp';
 
 import { Font } from '@jimp/plugin-print';
@@ -24,71 +24,67 @@ export class KillDetails {
   }
 
   async getMessages() {
-    const details = await this.getKillImages();
-    const inventory = await this.getInventoryImage();
-    this.logger.log(`Kill Images ${this.event.EventId} Image Compiled`);
-
-    const detailsFileName = `${this.event.EventId}-event-details.png`;
-    const inventoryFileName = `${this.event.EventId}-event-inventory.png`;
-
-    const detailsFile = new MessageAttachment(details, detailsFileName);
-    const inventoryFile = new MessageAttachment(inventory, inventoryFileName);
-
-    const messages: MessageOptions[] = [
-      {
-        files: [detailsFile],
-        embed: {
-          ...this.getBaselineEmbed(`${this.event.Killer.Name} killed ${this.event.Victim.Name}`),
-          image: {
-            url: `attachment://${detailsFileName}`
-          }
-        }
-      },
-      {
-        files: [inventoryFile],
-        embed: {
-          ...this.getBaselineEmbed(`${this.event.Victim.Name}'s Inventory`),
-          image: {
-            url: `attachment://${inventoryFileName}`
-          }
-        }
-      },
-      ...this.event.Participants.map((participant) => ({
-        embed: {
-          ...this.getBaselineEmbed(`Kill Participant: ${participant.Name} (${this.getDamageDone(participant)}%)`),
-          thumbnail: {
-            url: participant?.Equipment?.MainHand?.Type
-              ? this.client.getItemImageUrl(participant.Equipment.MainHand)
-              : 'https://albiononline.com/assets/images/killboard/kill__date.png'
-          },
-          fields: [
-            {
-              name: 'Guild',
-              value:
-                (participant.AllianceName ? '[' + participant.AllianceName + ']' : '') +
-                (participant.GuildName ? participant.GuildName : '<none>')
-            },
-            {
-              name: 'Average Item Power',
-              value: participant.AverageItemPower.toFixed(2),
-              inline: true
-            },
-            {
-              name: 'Damage Done',
-              value: participant.DamageDone,
-              inline: true
-            },
-            {
-              name: 'Support Healing Done',
-              value: participant.SupportHealingDone,
-              inline: true
-            }
-          ]
-        }
-      }))
-    ];
-
-    return messages;
+    // const details = await this.getKillImages();
+    // const inventory = await this.getInventoryImage();
+    // this.logger.log(`Kill Images ${this.event.EventId} Image Compiled`);
+    // const detailsFileName = `${this.event.EventId}-event-details.png`;
+    // const inventoryFileName = `${this.event.EventId}-event-inventory.png`;
+    // const detailsFile = new MessageAttachment(details, detailsFileName);
+    // const inventoryFile = new MessageAttachment(inventory, inventoryFileName);
+    // const messages: MessageOptions[] = [
+    //   {
+    //     files: [detailsFile],
+    //     embed: {
+    //       ...this.getBaselineEmbed(`${this.event.Killer.Name} killed ${this.event.Victim.Name}`),
+    //       image: {
+    //         url: `attachment://${detailsFileName}`
+    //       }
+    //     }
+    //   },
+    //   {
+    //     files: [inventoryFile],
+    //     embed: {
+    //       ...this.getBaselineEmbed(`${this.event.Victim.Name}'s Inventory`),
+    //       image: {
+    //         url: `attachment://${inventoryFileName}`
+    //       }
+    //     }
+    //   },
+    //   ...this.event.Participants.map((participant) => ({
+    //     embed: {
+    //       ...this.getBaselineEmbed(`Kill Participant: ${participant.Name} (${this.getDamageDone(participant)}%)`),
+    //       thumbnail: {
+    //         url: participant?.Equipment?.MainHand?.Type
+    //           ? this.client.getItemImageUrl(participant.Equipment.MainHand)
+    //           : 'https://albiononline.com/assets/images/killboard/kill__date.png'
+    //       },
+    //       fields: [
+    //         {
+    //           name: 'Guild',
+    //           value:
+    //             (participant.AllianceName ? '[' + participant.AllianceName + ']' : '') +
+    //             (participant.GuildName ? participant.GuildName : '<none>')
+    //         },
+    //         {
+    //           name: 'Average Item Power',
+    //           value: participant.AverageItemPower.toFixed(2),
+    //           inline: true
+    //         },
+    //         {
+    //           name: 'Damage Done',
+    //           value: participant.DamageDone,
+    //           inline: true
+    //         },
+    //         {
+    //           name: 'Support Healing Done',
+    //           value: participant.SupportHealingDone,
+    //           inline: true
+    //         }
+    //       ]
+    //     }
+    //   }))
+    // ];
+    // return messages;
   }
 
   getDamageDone(player: Player) {
@@ -219,7 +215,7 @@ export class KillDetails {
       }
       return image;
     } catch (error) {
-      this.logger.error(error.message);
+      // this.logger.error(error.message);
     }
   }
 
@@ -296,7 +292,7 @@ export class KillDetails {
 
       return image;
     } catch (error) {
-      this.logger.error(error.message);
+      // this.logger.error(error.message);
     }
   }
 

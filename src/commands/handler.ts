@@ -6,8 +6,8 @@ import { Config } from '../config';
 import { AlbionEventReport } from './albion/event-report';
 import { AlbionKillboardDetails } from './albion/killboard-details';
 import { AlbionKillboardMonitor } from './albion/killboard-monitor';
-import { AlbionServerStatus } from './albion/servers-status';
-import { BotUsage } from './bot-usage';
+// import { AlbionServerStatus } from './albion/servers-status';
+// import { BotUsage } from './bot-usage';
 import { ClearChannel } from './channel-clear';
 import { Command } from './types';
 
@@ -23,7 +23,7 @@ export function handleMessage(
 
   const commands: Command[] = [
     new ClearChannel(manager, channel, message, logger),
-    new AlbionServerStatus(config, channel, message, logger),
+    // new AlbionServerStatus(config, channel, message, logger),
     new AlbionEventReport(config, channel, message, logger),
     new AlbionKillboardDetails(config, channel, message, logger),
     new AlbionKillboardMonitor(config, manager, channel, message, logger)
@@ -31,7 +31,7 @@ export function handleMessage(
 
   const command = commands.find((command) => commandString.match(command.regex));
 
-  if (!command) return new BotUsage(commands, channel, message, logger).exec();
+  // if (!command) return new BotUsage(commands, channel, message, logger).exec();
 
   try {
     command.exec(commandString);

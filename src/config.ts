@@ -4,6 +4,7 @@ export interface ValidConfig {
   ALBION_API_BASE: string;
   ALBION_SERVER_STATUS_URLS: string[];
   DISCORD_TOKEN: string;
+  DISCORD_CLIENT_ID: string;
   DISCORD_PLAYING_GAME: string;
   NODE_ENV: string;
   DB_HOST: string;
@@ -44,6 +45,7 @@ export class Config {
         .items(validator.string().uri())
         .default(['http://live.albiononline.com/status.txt', 'http://staging.albiononline.com/status.txt']),
       DISCORD_TOKEN: validator.string(),
+      DISCORD_CLIENT_ID: validator.string(),
       DISCORD_PLAYING_GAME: validator.string().default('with the Koga Clan'),
       FONT_PATH: validator.string().default(''),
       NODE_ENV: Joi.string().default('local'),
