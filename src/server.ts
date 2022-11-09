@@ -112,7 +112,7 @@ const registerCommands = async (clientId: string, token: string) => {
       }
 
       try {
-        await command.execute(manager, interaction);
+        await command.execute(manager, config, interaction);
       } catch (error) {
         console.error(error);
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -135,7 +135,7 @@ const registerCommands = async (clientId: string, token: string) => {
           const existing = await manager.findOneBy(NewWorldCircadianRhythm, { serverId });
           if (existing) data.id = existing.id;
           await manager.save(NewWorldCircadianRhythm, data);
-          const timetableMessage = await getTimetable(manager, serverId);
+          const timetableMessage = await getTimetable(config, manager, serverId);
           await interaction.reply(timetableMessage);
         } catch (errors) {
           await interaction.reply(`Validation Failed. Errors: ${errors}`);

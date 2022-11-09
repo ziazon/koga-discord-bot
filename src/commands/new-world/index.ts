@@ -10,6 +10,7 @@ import {
 import * as moment from 'moment';
 import { EntityManager } from 'typeorm';
 
+import { Config } from '../../config';
 import { KogaCommand, NewWorldDay, NewWorldDayPeriodAction } from '../../types';
 import { addDayPeriodCommand, getTimetable, getTimetableCommand } from './day-period';
 
@@ -22,10 +23,10 @@ class NewWorld implements KogaCommand {
     .addSubcommand(getTimetableCommand)
     .addSubcommand(addDayPeriodCommand(NewWorldDay.Daybreak))
     .addSubcommand(addDayPeriodCommand(NewWorldDay.Nightfall));
-  async execute(manager: EntityManager, interaction) {
+  async execute(manager: EntityManager, config: Config, interaction) {
     const subCommand = interaction.options.getSubcommand();
     if (subCommand === NewWorldDayPeriodAction.GetTime) {
-      const timetableMessage = await getTimetable(manager, interaction.guildId);
+      const timetableMessage = await getTimetable(config, manager, interaction.guildId);
       await interaction.reply(timetableMessage);
     } else if ([NewWorldDay.Daybreak, NewWorldDay.Nightfall].includes(subCommand)) {
       const now = moment().format('HH:mm');
