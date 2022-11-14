@@ -21,6 +21,7 @@ export class DBConfigService {
       username: this.serviceConfig.get('DB_USER'),
       password: this.serviceConfig.get('DB_PASSWORD'),
       database: this.serviceConfig.get('DB_NAME'),
+      ssl: this.serviceConfig.get('DB_SSL'),
       synchronize: this.serviceConfig.get('DB_SYNCHRONIZE'),
       migrationsRun: this.serviceConfig.get('DB_SYNCHRONIZE'),
       namingStrategy: new DBNamingStrategy(),

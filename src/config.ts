@@ -1,4 +1,5 @@
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
+import { TlsOptions } from 'tls';
 
 export interface ValidConfig {
   ALBION_API_BASE: string;
@@ -11,6 +12,7 @@ export interface ValidConfig {
   DB_PORT: number;
   DB_USER: string;
   DB_PASSWORD: string;
+  DB_SSL: boolean | TlsOptions;
   DB_NAME: string;
   DB_SYNCHRONIZE: boolean;
   PWD: string;
@@ -23,17 +25,31 @@ export interface ValidConfig {
 export type RawConfig = Record<string, string>;
 
 export interface CustomValidator extends Joi.Root {
+  jsonString: () => Joi.ArraySchema;
   stringArray: () => Joi.ArraySchema;
 }
 
-const validator: CustomValidator = Joi.extend((joi) => ({
-  type: 'stringArray',
-  base: joi.array(),
-  messages: {
-    'stringArray.base': '"{{#label}}" must be a string'
-  },
-  coerce: (value) => ({ value: value.split(',') })
-}));
+const validator: CustomValidator = Joi.extend(
+  (joi) => ({
+    type: 'jsonString',
+    base: joi.string(),
+    coerce(value) {
+      try {
+        return { value: JSON.parse(value) };
+      } catch (error) {
+        return { error };
+      }
+    }
+  }),
+  (joi) => ({
+    type: 'stringArray',
+    base: joi.array(),
+    messages: {
+      'stringArray.base': '"{{#label}}" must be a string'
+    },
+    coerce: (value) => ({ value: value.split(',') })
+  })
+);
 
 export class Config {
   private readonly config: ValidConfig;
@@ -48,14 +64,15 @@ export class Config {
       DISCORD_CLIENT_ID: validator.string(),
       DISCORD_PLAYING_GAME: validator.string().default('with the Koga Clan'),
       FONT_PATH: validator.string().default(''),
-      NODE_ENV: Joi.string().default('local'),
+      NODE_ENV: validator.string().default('local'),
       PWD: validator.string(),
-      DB_HOST: Joi.string().default('127.0.0.1'),
-      DB_PORT: Joi.number().default(5432),
-      DB_USER: Joi.string(),
-      DB_PASSWORD: Joi.string().allow(''),
-      DB_NAME: Joi.string(),
-      DB_SYNCHRONIZE: Joi.boolean().default(true),
+      DB_HOST: validator.string().default('127.0.0.1'),
+      DB_PORT: validator.number().default(5432),
+      DB_USER: validator.string(),
+      DB_PASSWORD: validator.string().allow(''),
+      DB_NAME: validator.string(),
+      DB_SSL: validator.jsonString().default(false),
+      DB_SYNCHRONIZE: validator.boolean().default(true),
       npm_package_name: validator.string(),
       npm_package_gitHead: validator.string(),
       npm_package_version: validator.string()
