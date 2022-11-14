@@ -1,5 +1,5 @@
 node_modules/
-build/
+dist/
 .envrc
 assets/fonts/
 tmp/

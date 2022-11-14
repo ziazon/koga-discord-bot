@@ -3,7 +3,7 @@
     "target": "es2017",
     "module": "commonjs",
     "strict": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "rootDir": "./src",
     "declaration": true,
     "noImplicitAny": false,
@@ -15,9 +15,16 @@
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "allowJs": false,
     "strictNullChecks": false
   },
-  "exclude": ["node_modules", "./**/*.spec.ts", "./build"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./**/*.spec.ts",
+    "./build"
+  ]
 }
