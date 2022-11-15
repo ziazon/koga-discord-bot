@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "An Discord Bot for general Koga Clan needs.",
   "main": "build/server.js",
-  "engines": {
-    "node": "14.x"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/jubairsaidi/albion-online-bot.git"
@@ -65,8 +62,7 @@
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
-    "serve": "node dist/server.js",
-    "start:dev": "tsc-watch --outDir ./build --onSuccess \"node build/server.js\" --onFailure \"echo Beep! Compilation Failed\"",
+    "serve": "tsc-watch --outDir ./dist --onSuccess \"node dist/server.js\" --onFailure \"echo Beep! Compilation Failed\"",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm --config src/db/cli-config.ts",
     "build": "tsc"
   },
