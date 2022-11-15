@@ -67,7 +67,11 @@ export class Config {
       NODE_ENV: validator.string().default('local'),
       PWD: validator.string(),
       DB_HOST: validator.string().default('127.0.0.1'),
-      DB_PORT: validator.number().default(5432),
+      DB_PORT: validator
+        .string()
+        .pattern(/^[0-9]+$/)
+        .required()
+        .default(5432),
       DB_USER: validator.string(),
       DB_PASSWORD: validator.string().allow(''),
       DB_NAME: validator.string(),
